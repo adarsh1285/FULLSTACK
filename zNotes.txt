@@ -1,0 +1,53 @@
+=> Agar hum koi file import karne ke liye require ka use kar rhe hai to vh direct use kar sakate hai 
+ydi import ka use karna chahate hai to package.json me 'type' = "module" add karna padega.
+
+=> cors ka error backend pr resolve hota hai.
+
+==================================================================================================
+Boiler plate code for all projects : -
+---------------------------------------
+
+import express, { urlencoded }  from "express"
+import dotenv from "dotenv"
+import cors from "cors"
+
+dotenv.config()
+
+const app = express()
+
+app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+    methods: ['GET', 'POST', 'DELET', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}))
+
+app.use(express.json()) // ka use Express.js me isliye kiya jata hai taaki server incoming requests ke JSON data ko automatically parse kr ske.
+app.use(express.urlencoded({extended: true})) // ka use Express.js me tab kiya jata hai jab aapko HTML form se bheje gaye data ko parse karna hota hai
+
+const port = process.env.PORT || 4000
+
+app.get('/', (req, res) => {
+  res.send('Hello World!')
+})
+
+
+app.listen(port, () => {
+  console.log(`Example app listening on port ${port}`)
+})
+
+========================================================================================================
+
+Boiler plate code for creating schema in mongoose
+---------------------------------------------------
+
+import mongoose from "mongoose"
+
+const userSchema = new mongoose.Schema()
+
+
+const User = mongoose.model("User", userSchema)
+
+export default User
+
+================================================================================
