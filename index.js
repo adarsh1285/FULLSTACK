@@ -8,7 +8,7 @@ dotenv.config()
 const app = express()
 
 //import all routes 
-import router from "./routes/user.routes.js"
+import userRoutes from "./routes/user.routes.js"
 
 app.use(cors({
     origin: process.env.BASE_URL,
@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 db()
 
 //user routes
-app.use("/api/v1/users", router);
+app.use("/api/v1/users", userRoutes);
 
 
 app.listen(port, () => {
