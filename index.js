@@ -2,6 +2,7 @@ import express, { urlencoded }  from "express"
 import dotenv from "dotenv"
 import cors from "cors"
 import db from "./utils/db.js"
+import cookieParser from "cookie-parser"
 
 dotenv.config()
 
@@ -9,6 +10,7 @@ const app = express()
 
 //import all routes 
 import userRoutes from "./routes/user.routes.js"
+app.use(cookieParser());
 
 app.use(cors({
     origin: process.env.BASE_URL,
