@@ -71,7 +71,7 @@ const registerUser = async (req, res) => {
             ${process.env.BASE_URL}/api/v1/users/verify/${token}`,
         }
 
-         transporter.sendMail(mailOption);
+        transporter.sendMail(mailOption);
 
         // send success message to the user
         res.status(200).json({
@@ -164,7 +164,7 @@ const login = async (req, res) => {
             maxAge: 24 * 60 * 60 * 1000
         }
 
-        res.cookie("test", token, cookieOption);
+        res.cookie("token", token, cookieOption);
 
         res.status(200).json({
             success: true,
@@ -181,33 +181,75 @@ const login = async (req, res) => {
 }
 
 const getMe = async (req, res) => {
-    try{
+    try {
+        const user = await User.findById(req.user.id).select("-password")
+        if (!user) {
+            return res.status(400).json({
+                success: false,
+                message: "User not found"
+            });
+        }
+        res.status(200).json({
+            success: true,
+            message: "user found",
+            user
+        })
 
-    }catch(err){
-
+    } catch (err) {
+        return res.status(400).json({
+            success: true,
+            message: "profile not present here"
+        })
     }
 }
 
 const logoutUser = async (req, res) => {
-    try{
-
-    }catch(err){
-
+    try {
+        res.cookie("token", "", {});
+        res.status(200).json({
+            success: true,
+            message: "Logged out successfully"
+        })
+    } catch (err) {
+        return res.status(400).json({
+            success: true,
+            message: "No logout"
+        })
     }
 }
 
 const forgotPassword = async (req, res) => {
-    try{
+    try {
+        //get email from req.body
+        //find user based on email
+        //reset token + reset expiry => Date.now() + 10 * 60 * 1000 => user.save().
+        // sent email => design url
 
-    }catch(err){
+    } catch (err) {
 
     }
 }
 
 const resetPassword = async (req, res) => {
-    try{
+    try {
+        //collect token from params
+        //password from req.body
+        const { token } = req.params
+        const { password } = req.body
 
-    }catch(err){
+        try {
+            User.findOne({
+                resetPasswordToken: token,
+                resetPasswordExpires: { $gt: Date.now() }
+            })
+
+            //set password in user
+            //reset token , reset expiry => empty
+            // save user
+        } catch (error) {
+
+        }
+    } catch (err) {
 
     }
 }
